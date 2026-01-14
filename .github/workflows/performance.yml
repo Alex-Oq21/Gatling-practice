@@ -1,0 +1,39 @@
+name: Gatling Performance Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  gatling:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'maven'
+
+      - name: Verify Java
+        run: java -version
+
+      - name: Compile tests
+        run: mvn clean test-compile
+
+      - name: Run Gatling
+        run: |
+          mvn gatling:test \
+            -Dgatling.simulationClass=com.dummy.simulations.LoadSimulation
+
+      - name: Upload Gatling Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gatling-report
+          path: target/gatling
