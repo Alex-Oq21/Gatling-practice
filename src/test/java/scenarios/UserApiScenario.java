@@ -1,6 +1,7 @@
 package scenarios;
 
 import io.gatling.javaapi.core.FeederBuilder;
+import requests.CreateProductApiRequest;
 import requests.UserApiRequests;
 import io.gatling.javaapi.core.ScenarioBuilder;
 
@@ -17,5 +18,7 @@ public class UserApiScenario {
                     .exec(UserApiRequests.login)
                     .exitHereIfFailed()
                     .pause(1)
-                    .exec(UserApiRequests.getProfile);
+                    .exec(UserApiRequests.getProfile)
+                    .pause(1)
+                    .exec(CreateProductApiRequest.createProduct);
 }
