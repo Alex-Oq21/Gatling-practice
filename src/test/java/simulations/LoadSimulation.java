@@ -2,7 +2,7 @@ package simulations;
 
 import config.TestConfig;
 import io.gatling.javaapi.core.Simulation;
-import requests.CreateProductApiRequest;
+import scenarios.CreateProductScenario;
 import scenarios.UserApiScenario;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
@@ -16,7 +16,16 @@ public class LoadSimulation extends Simulation {
                                         .during(TestConfig.RAMP_UP),
                                 constantUsersPerSec(20)
                                         .during(TestConfig.DURATION)
+                        ),
+                CreateProductScenario.productFlow
+                        .injectOpen(
+                                rampUsers(TestConfig.USERS)
+                                        .during(TestConfig.RAMP_UP),
+                                constantUsersPerSec(20)
+                                        .during(TestConfig.DURATION)
                         )
+
+
 
         )
                 .protocols(TestConfig.httpProtocol)

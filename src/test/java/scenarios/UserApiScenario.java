@@ -19,6 +19,5 @@ public class UserApiScenario {
                     .exitHereIfFailed()
                     .pause(1)
                     .exec(UserApiRequests.getProfile)
-                    .pause(1)
-                    .exec(CreateProductApiRequest.createProduct);
+                    .pause(1);
 }

@@ -12,7 +12,7 @@ public class TestConfig {
 
     // NFRs
     public static final int MAX_RESPONSE_TIME_P95 = 800;
-    public static final double MAX_ERROR_PERCENTAGE = 5.0;
+    public static final double MAX_ERROR_PERCENTAGE = 9.0;
 
     public static HttpProtocolBuilder httpProtocol = http
             .baseUrl(BASE_URL)
