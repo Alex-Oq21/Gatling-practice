@@ -1,5 +1,6 @@
 package simulations;
 
+import config.StressConfig;
 import config.TestConfig;
 import io.gatling.javaapi.core.Simulation;
 import scenarios.CreateProductScenario;
@@ -9,25 +10,26 @@ import java.time.Duration;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
 
-public class LoadSimulation extends Simulation {
+public class StressSimulation extends Simulation {
     {
         setUp(
                 UserApiScenario.userFlow
                         .injectOpen(
-                               rampUsersPerSec(1).to(TestConfig.USERS)
-                                       .during(Duration.ofSeconds(TestConfig.RAMP_UP)),
-                                constantUsersPerSec(TestConfig.USERS).during(Duration.ofSeconds(TestConfig.DURATION))
+                                incrementUsersPerSec(1)
+                                        .times(StressConfig.STEPS)
+                                        .eachLevelLasting(StressConfig.DURATION)
+                                        .separatedByRampsLasting(10)
+                                        .startingFrom(StressConfig.USERS)
                         ),
                 CreateProductScenario.productFlow
                         .injectOpen(
-                                rampUsersPerSec(1).to(TestConfig.USERS)
-                                        .during(Duration.ofSeconds(TestConfig.RAMP_UP)),
-                                constantUsersPerSec(TestConfig.USERS).during(Duration.ofSeconds(TestConfig.DURATION))
+                        incrementUsersPerSec(1)
+                                .times(StressConfig.STEPS)
+                                .eachLevelLasting(StressConfig.DURATION)
+                                .separatedByRampsLasting(10)
+                                .startingFrom(StressConfig.USERS)
                         )
-
-
-        )
-                .protocols(TestConfig.httpProtocol)
+        ).protocols(TestConfig.httpProtocol)
                 .assertions(
                         global().responseTime().percentile(95)
                                 .lt(TestConfig.MAX_RESPONSE_TIME_P95),

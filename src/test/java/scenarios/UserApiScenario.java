@@ -17,7 +17,7 @@ public class UserApiScenario {
                     .feed(userFeeder)
                     .exec(UserApiRequests.login)
                     .exitHereIfFailed()
-                    .pause(1)
+                    .pause(1, 5)
                     .exec(UserApiRequests.getProfile)
-                    .pause(1);
+                    .pause(1, 5);
 }

@@ -19,8 +19,9 @@ public class UserApiRequests {
                           "username": "#{username}",
                           "password": "#{password}"
                         }
-                    """))
-                    .check(status().is(200))
+                    """)).asJson()
+                    .check(status().in(200, 201))
+                    .check(jsonPath("$.accessToken").exists())
                     .check(jsonPath("$.accessToken").saveAs("authToken"));
 
     public static HttpRequestActionBuilder getProfile =

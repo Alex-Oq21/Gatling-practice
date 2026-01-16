@@ -10,6 +10,5 @@ public class CreateProductScenario {
     public static ScenarioBuilder productFlow =
             scenario("Create Product API Flow")
                     .exec(CreateProductApiRequest.createProduct)
-                    .exitHereIfFailed()
-                    .pause(1);
+                    .pause(1, 5);
 }
